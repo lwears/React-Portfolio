@@ -1,25 +1,38 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route } from 'react-router-dom';
+import styled, { ThemeProvider } from 'styled-components';
+import GlobalStyles from './global';
+import theme from './theme';
+import About from './views/about';
+import Experience from './views/experience';
+import NavBar from './components/navigation/Navbar';
+
+const Container = styled.div`
+  display: flex;
+  flex-flow: row;
+  background-color: gray;
+  color: white;
+  height: 100vh;
+`;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <>
+        <BrowserRouter>
+          <Container>
+            <GlobalStyles />
+            <NavBar />
+            <Route exact path="/">
+              <About />
+            </Route>
+            <Route exact path="/experience">
+              <Experience />
+            </Route>
+          </Container>
+        </BrowserRouter>
+      </>
+    </ThemeProvider>
   );
 }
 
