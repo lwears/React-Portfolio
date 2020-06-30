@@ -1,35 +1,51 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import GlobalStyles from './global';
 import theme from './theme';
 import About from './views/about';
 import Experience from './views/experience';
-import NavBar from './components/navigation/Navbar';
-
-const Container = styled.div`
-  display: flex;
-  flex-flow: row;
-  background-color: gray;
-  color: white;
-  height: 100vh;
-`;
+import Education from './views/education';
+import { Burger, Menu } from './components/index';
 
 function App() {
+  const [open, setOpen] = useState(false);
+  const node = useRef<HTMLDivElement>(null);
+  const menuId = 'main-menu';
+
+  useEffect(() => {
+    const listener = (event: MouseEvent) => {
+      if (!node.current || node.current.contains(event.target as Element)) {
+        return;
+      }
+      setOpen(false);
+    };
+    document.addEventListener('mousedown', listener);
+    return () => {
+      document.removeEventListener('mousedown', listener);
+    };
+  }, [node, open]);
+
   return (
     <ThemeProvider theme={theme}>
       <>
         <BrowserRouter>
-          <Container>
-            <GlobalStyles />
-            <NavBar />
+          <GlobalStyles />
+          <div ref={node}>
+            <Burger open={open} setOpen={setOpen} />
+            <Menu open={open} setOpen={setOpen} />
+          </div>
+          <div>
             <Route exact path="/">
               <About />
             </Route>
             <Route exact path="/experience">
               <Experience />
             </Route>
-          </Container>
+            <Route exact path="/education">
+              <Education />
+            </Route>
+          </div>
         </BrowserRouter>
       </>
     </ThemeProvider>

@@ -8,7 +8,7 @@ const Content = styled.div`
   background-color: #efeef1;
   color: black;
   height: 100vh;
-  flex: 3;
+  flex: 4;
   padding: 3rem;
 `;
 
